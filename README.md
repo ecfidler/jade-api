@@ -10,7 +10,7 @@ Python 3.10.6
 
 ```
 python -m venv venv
-venv/Scripts/activate
+venv/Scripts/activate (or) source venv/bin/activate
 ```
 
 ### install packages
