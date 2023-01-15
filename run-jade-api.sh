@@ -1,2 +1,2 @@
 source venv/bin/activate
-uvicorn main:app
+uvicorn api:app
