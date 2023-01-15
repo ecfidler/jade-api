@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 
-app = FastAPI(root_path="/api",title="JADE api")  
+app = FastAPI(title="JADE api")
 
 @app.get("/")
 async def root():
