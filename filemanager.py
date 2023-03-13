@@ -21,12 +21,12 @@ def read_file_from_filename(filename: str):
         raise FileNotFoundError()
     with open(filepath, 'rb') as f:
         data = f.read()
-    return data
+    return data, filepath.suffix
 
 
 def save_file(name: str, file: bytes):
-    if not file:
-        raise ValueError
     filepath = PATH / name
+    if not file or filepath.suffix not in FILETYPES:
+        raise ValueError
     size = filepath.write_bytes(file)
     return {'file': filepath, 'bytes': size}
