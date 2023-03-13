@@ -129,6 +129,6 @@ dmypy.json
 .pyre/
 
 # My added stuff
-.stl
-.gcode
+*.stl
+*.gcode
 filemanager.ipynb
