@@ -1,4 +1,5 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException, status, Response
+from fastapi.middleware.cors import CORSMiddleware
 # from fastapi.responses import JSONResponse
 
 from random import randint
@@ -19,6 +20,15 @@ tags = [
 app = FastAPI(title="JADE API",
               description="The API that the JADE interface uses to interact with the printer",
               openapi_tags=tags)
+
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.get("/")
