@@ -43,7 +43,7 @@ async def put_file(file: UploadFile):
         return Response(status_code=status.HTTP_200_OK)
     except ValueError:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid file. Accepted types: .stl, .gcode")
+            status_code=status.HTTP_400_BAD_REQUEST, detail=f"Invalid file. Accepted file types: .stl, .gcode")
 
 
 @app.get("/file/{name}", tags=["Files"])
@@ -53,7 +53,7 @@ async def get_file(name: str):
         return Response(content=data, headers={"name": name, "extension": suffix})
     except FileNotFoundError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
-                            detail=f"File not found: {name}")
+                            detail=f"File not found in directory: {name}")
 
 
 @app.get("/printerStatus", tags=["Status"])
