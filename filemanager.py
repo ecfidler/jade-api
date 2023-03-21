@@ -30,3 +30,23 @@ def save_file(name: str, file: bytes):
         raise ValueError
     size = filepath.write_bytes(file)
     return {'file': filepath, 'bytes': size}
+
+
+def rename_file(oldname: str, newname: str):
+    path = Path(PATH) / oldname
+    if not (path.exists() and path.is_file()):
+        raise ValueError
+
+    new_path = Path(PATH) / newname
+    path.rename(new_path)
+    return newname
+
+
+def delete_file_from_name(filename: str):
+    path = Path(PATH) / filename
+    if not (path.exists() and path.is_file()):
+        raise ValueError
+
+    path.unlink()
+
+    return True

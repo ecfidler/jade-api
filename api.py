@@ -4,7 +4,7 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from random import randint
 
-from filemanager import get_file_listing, read_file_from_filename, save_file
+from filemanager import get_file_listing, read_file_from_filename, save_file, rename_file, delete_file_from_name
 
 tags = [
     {
@@ -64,6 +64,26 @@ async def get_file(name: str):
     except FileNotFoundError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"File not found in directory: {name}")
+
+
+@app.patch("/file/{name}", tags=["Files"])
+async def patch_file_name(name: str, new_name: str):
+    try:
+        new_name_response = rename_file(name,  new_name)
+        return Response(status_code=status.HTTP_200_OK)
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail=f"Failed renaming file: '{name}' to '{new_name_response}' ")
+
+
+@app.delete("/file/{name}", tags=["Files"])
+async def delete_file(name: str):
+    try:
+        delete_file_from_name(name)
+        return Response(status_code=status.HTTP_200_OK)
+    except ValueError:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
+                            detail=f"Could not find file '{name}' to delete")
 
 
 @app.get("/printerStatus", tags=["Status"])
