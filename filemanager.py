@@ -4,6 +4,7 @@ from pathlib import Path
 
 PATH = Path('.') / 'files'
 FILETYPES = {'.stl', '.gcode'}
+SUPPORTED_PRINTABLE_TYPES = {'.gcode'}
 
 
 def get_files_of_types(path: Path, types: set):
@@ -50,3 +51,11 @@ def delete_file_from_name(filename: str):
     path.unlink()
 
     return True
+
+
+def verify_file_is_printable(filename: str):
+    path = Path(PATH) / filename
+    if path.suffix in SUPPORTED_PRINTABLE_TYPES:
+        return True
+
+    return False

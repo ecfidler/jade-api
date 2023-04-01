@@ -4,16 +4,20 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from random import randint
 
-from filemanager import get_file_listing, read_file_from_filename, save_file, rename_file, delete_file_from_name
+from filemanager import get_file_listing, read_file_from_filename, save_file, rename_file, delete_file_from_name, verify_file_is_printable
 
 tags = [
     {
         "name": "Files",
-        "description": "Files stored in storage on the printer"
+        "description": "Files stored in storage on the printer."
     },
     {
         "name": "Status",
-        "description": "Physical data collected by the printer"
+        "description": "Physical data collected by the printer."
+    },
+    {
+        "name": "Print",
+        "description": "Control for the printing processes."
     }
 ]
 
@@ -84,6 +88,27 @@ async def delete_file(name: str):
     except ValueError:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,
                             detail=f"Could not find file '{name}' to delete")
+
+
+@app.put("/print/{name}", tags=["Print"])
+async def print_file(name: str):
+    try:
+        if verify_file_is_printable(name):
+            # print file here with filename using Andrew utility
+            return Response(status_code=status.HTTP_200_OK)
+    except:
+        raise HTTPException(status_code=status.HTTP_400_BAD_REQUEST,
+                            detail=f"Printer can only print files of type '.gcode'")
+
+
+@app.put("/stop", tags=["Print"])
+async def stop_print():
+    try:
+        # stop print file here using Andrew utility
+        return Response(status_code=status.HTTP_200_OK)
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN, detail=f"Stop printer failed")
 
 
 @app.get("/printerStatus", tags=["Status"])
